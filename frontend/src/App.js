@@ -1,0 +1,335 @@
+import React, { useState } from 'react';
+import axios from 'axios';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+import './App.css';
+
+function App() {
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
+  const [file, setFile] = useState(null);
+  const [semesterStart, setSemesterStart] = useState('');
+  const [semesterEnd, setSemesterEnd] = useState('');
+  const [breaks, setBreaks] = useState([]);
+  const [newBreak, setNewBreak] = useState({ name: '', start: '', end: '' });
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [useAI, setUseAI] = useState(false);
+  const [apiKey, setApiKey] = useState('');
+  const [urlMode, setUrlMode] = useState(false);
+  const [url, setUrl] = useState('');
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+    setError('');
+  };
+
+  const addBreak = () => {
+    if (newBreak.name && newBreak.start && newBreak.end) {
+      setBreaks([...breaks, newBreak]);
+      setNewBreak({ name: '', start: '', end: '' });
+    }
+  };
+
+  const removeBreak = (index) => {
+    setBreaks(breaks.filter((_, i) => i !== index));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    setEvents([]);
+
+    try {
+      if (urlMode) {
+        // URL scraping mode
+        const response = await axios.post(`${API_URL}/api/scrape`, {
+          url,
+          semester_start: semesterStart,
+          semester_end: semesterEnd
+        });
+
+        setEvents(response.data.events);
+      } else {
+        // File upload mode
+        if (!file) {
+          setError('Please select a file');
+          setLoading(false);
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('semester_start', semesterStart);
+        formData.append('semester_end', semesterEnd);
+        formData.append('breaks', JSON.stringify(breaks));
+        formData.append('use_ai', useAI.toString());
+        if (useAI && apiKey) {
+          formData.append('api_key', apiKey);
+        }
+
+        const response = await axios.post(`${API_URL}/api/upload`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+
+        setEvents(response.data.events);
+      }
+    } catch (err) {
+      setError(err.response?.data?.error || 'An error occurred');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Group events by date for calendar
+  const eventsByDate = events.reduce((acc, event) => {
+    if (!acc[event.date]) {
+      acc[event.date] = [];
+    }
+    acc[event.date].push(event);
+    return acc;
+  }, {});
+
+  // Tile content for calendar
+  const tileContent = ({ date, view }) => {
+    if (view === 'month') {
+      const dateStr = date.toISOString().split('T')[0];
+      const dayEvents = eventsByDate[dateStr];
+
+      if (dayEvents) {
+        return (
+          <div className="event-dots">
+            {dayEvents.map((event, idx) => (
+              <span
+                key={idx}
+                className={`event-dot ${event.type}`}
+                title={event.title}
+              />
+            ))}
+          </div>
+        );
+      }
+    }
+    return null;
+  };
+
+  // Get event type color
+  const getEventTypeColor = (type) => {
+    switch (type) {
+      case 'exam':
+        return '#e74c3c';
+      case 'assignment':
+        return '#3498db';
+      case 'class':
+        return '#95a5a6';
+      default:
+        return '#9b59b6';
+    }
+  };
+
+  return (
+    <div className="App">
+      <div className="container">
+        <h1>Syllabus Calendar Extractor</h1>
+        <p className="subtitle">Upload your syllabus and extract important dates automatically</p>
+
+        <div className="mode-toggle">
+          <button
+            className={!urlMode ? 'active' : ''}
+            onClick={() => setUrlMode(false)}
+          >
+            Upload File
+          </button>
+          <button
+            className={urlMode ? 'active' : ''}
+            onClick={() => setUrlMode(true)}
+          >
+            Scrape URL
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="upload-form">
+          {!urlMode ? (
+            <div className="form-group">
+              <label>Upload Syllabus (PDF, DOCX, TXT)</label>
+              <input
+                type="file"
+                accept=".pdf,.docx,.txt"
+                onChange={handleFileChange}
+                required
+              />
+            </div>
+          ) : (
+            <div className="form-group">
+              <label>School Calendar URL</label>
+              <input
+                type="url"
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+                placeholder="https://school.edu/calendar"
+                required
+              />
+            </div>
+          )}
+
+          <div className="form-row">
+            <div className="form-group">
+              <label>Semester Start Date</label>
+              <input
+                type="date"
+                value={semesterStart}
+                onChange={(e) => setSemesterStart(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Semester End Date</label>
+              <input
+                type="date"
+                value={semesterEnd}
+                onChange={(e) => setSemesterEnd(e.target.value)}
+                required
+              />
+            </div>
+          </div>
+
+          {!urlMode && (
+            <>
+              <div className="breaks-section">
+                <h3>Breaks (Optional)</h3>
+                <div className="break-input">
+                  <input
+                    type="text"
+                    placeholder="Break name (e.g., Spring Break)"
+                    value={newBreak.name}
+                    onChange={(e) => setNewBreak({ ...newBreak, name: e.target.value })}
+                  />
+                  <input
+                    type="date"
+                    value={newBreak.start}
+                    onChange={(e) => setNewBreak({ ...newBreak, start: e.target.value })}
+                  />
+                  <input
+                    type="date"
+                    value={newBreak.end}
+                    onChange={(e) => setNewBreak({ ...newBreak, end: e.target.value })}
+                  />
+                  <button type="button" onClick={addBreak} className="add-break-btn">
+                    Add Break
+                  </button>
+                </div>
+
+                {breaks.length > 0 && (
+                  <div className="breaks-list">
+                    {breaks.map((breakItem, index) => (
+                      <div key={index} className="break-item">
+                        <span>
+                          {breakItem.name}: {breakItem.start} to {breakItem.end}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => removeBreak(index)}
+                          className="remove-btn"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="ai-section">
+                <label className="checkbox-label">
+                  <input
+                    type="checkbox"
+                    checked={useAI}
+                    onChange={(e) => setUseAI(e.target.checked)}
+                  />
+                  Use AI fallback for complex patterns
+                </label>
+
+                {useAI && (
+                  <div className="form-group">
+                    <label>Anthropic API Key (Optional)</label>
+                    <input
+                      type="password"
+                      value={apiKey}
+                      onChange={(e) => setApiKey(e.target.value)}
+                      placeholder="sk-ant-..."
+                    />
+                    <small>Only used if local extraction finds few events</small>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+
+          {error && <div className="error">{error}</div>}
+
+          <button type="submit" disabled={loading} className="submit-btn">
+            {loading ? 'Processing...' : 'Extract Dates'}
+          </button>
+        </form>
+
+        {events.length > 0 && (
+          <div className="results">
+            <h2>Extracted Events ({events.length})</h2>
+
+            <div className="legend">
+              <span className="legend-item">
+                <span className="legend-dot exam"></span> Exams
+              </span>
+              <span className="legend-item">
+                <span className="legend-dot assignment"></span> Assignments
+              </span>
+              <span className="legend-item">
+                <span className="legend-dot class"></span> Classes
+              </span>
+              <span className="legend-item">
+                <span className="legend-dot other"></span> Other
+              </span>
+            </div>
+
+            <div className="calendar-container">
+              <Calendar tileContent={tileContent} />
+            </div>
+
+            <div className="events-list">
+              <h3>Event Details</h3>
+              {events
+                .sort((a, b) => new Date(a.date) - new Date(b.date))
+                .map((event, index) => (
+                  <div
+                    key={index}
+                    className="event-item"
+                    style={{ borderLeftColor: getEventTypeColor(event.type) }}
+                  >
+                    <div className="event-date">
+                      {new Date(event.date).toLocaleDateString('en-US', {
+                        weekday: 'short',
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                      })}
+                    </div>
+                    <div className="event-details">
+                      <div className="event-title">{event.title}</div>
+                      <div className="event-type">{event.type}</div>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default App;
