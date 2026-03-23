@@ -431,9 +431,6 @@
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('generateBtn').disabled = false;
 
-                // Show success
-                showSuccess(`Calendar generated successfully! Found ${result.total_events} events across ${result.num_courses} course(s).`);
-
                 // Display calendar inline (not as download)
                 if (result.calendar_html) {
                     displayCalendar(result.calendar_html);
