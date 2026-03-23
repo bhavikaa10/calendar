@@ -13,43 +13,46 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #f5f7fa;
             min-height: 100vh;
-            padding: 20px;
+            padding: 0;
+            margin: 0;
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1400px;
             margin: 0 auto;
             background: white;
-            border-radius: 15px;
-            padding: 40px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            padding: 60px 80px;
+            min-height: 100vh;
         }
 
         h1 {
-            color: #333;
-            margin-bottom: 10px;
-            text-align: center;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+            text-align: left;
+            font-size: 42px;
+            font-weight: 700;
         }
 
         .subtitle {
-            text-align: center;
+            text-align: left;
             color: #666;
-            margin-bottom: 30px;
-            font-size: 14px;
+            margin-bottom: 50px;
+            font-size: 18px;
+            line-height: 1.6;
         }
 
         .form-section {
-            margin-bottom: 25px;
+            margin-bottom: 35px;
         }
 
         .form-section label {
             display: block;
-            margin-bottom: 8px;
-            color: #333;
+            margin-bottom: 12px;
+            color: #1a1a1a;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 16px;
         }
 
         .form-section input[type="date"],
@@ -144,20 +147,22 @@
 
         .generate-btn {
             width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 18px;
+            background: #667eea;
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
+            border-radius: 12px;
+            font-size: 17px;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s;
-            margin-top: 20px;
+            transition: all 0.3s;
+            margin-top: 30px;
         }
 
         .generate-btn:hover {
-            transform: translateY(-2px);
+            background: #5568d3;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
         }
 
         .generate-btn:active {
