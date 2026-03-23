@@ -14,7 +14,8 @@ build/
 # Flask
 instance/
 .webassets-cache
-uploads/
+backend/uploads/
+backend/output/
 
 # Node
 node_modules/
