@@ -59,8 +59,8 @@ const Auth = () => {
     <div className="auth-container">
       <div className="auth-card">
         <div className="auth-header">
-          <h1>📚 SyllaSync</h1>
-          <p>Never miss a deadline again</p>
+          <h1>📅 Planora</h1>
+          <p>Plan smarter, achieve more</p>
         </div>
 
         {message.text && (

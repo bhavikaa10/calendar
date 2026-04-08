@@ -142,7 +142,7 @@ def local_date_extraction(text, semester_start, semester_end, breaks):
                     date_str,
                     settings={
                         'PREFER_DATES_FROM': 'future',
-                        'RELATIVE_BASE': semester_start
+                        'RELATIVE_BASE': datetime.combine(semester_start, datetime.min.time())
                     }
                 )
 

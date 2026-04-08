@@ -11,37 +11,34 @@ ENV/
 dist/
 build/
 
-# Flask
-instance/
-.webassets-cache
-backend/uploads/
-backend/output/
-
 # Node
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# React
+# React build
 frontend/build/
 frontend/.env.local
-frontend/.env.development.local
-frontend/.env.test.local
-frontend/.env.production.local
 
-# IDE
+# IDEs
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
+
+# OS
 .DS_Store
+Thumbs.db
 
-# Environment
+# Uploads
+backend/uploads/
+*.pdf
+
+# Environment variables
 .env
-.env.local
+.env.production
 
-# API Keys
-*.key
-api_keys.txt
+# Logs
+*.log

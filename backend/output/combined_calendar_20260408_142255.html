@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Course Calendar</title>
+    <style>
+        .calendar-container {
+            width: 100%;
+        }
+        h1 {
+            text-align: left;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            font-size: 32px;
+            font-weight: 700;
+        }
+        .semester-info {
+            text-align: left;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .month-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            margin: 30px 0 15px 0;
+            border-radius: 8px;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .calendar-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        .calendar-table th {
+            background: #f0f0f0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            font-weight: 600;
+        }
+        .calendar-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            vertical-align: top;
+            height: 100px;
+            width: 14.28%;
+            position: relative;
+        }
+        .calendar-table td.empty {
+            background: #fafafa;
+        }
+        .calendar-table td.break {
+            background: #ffe6e6;
+        }
+        .calendar-table td.holiday {
+            background: #fff3cd;
+        }
+        .day-number {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .break-label {
+            font-size: 9px;
+            color: #dc3545;
+            font-weight: bold;
+            margin-top: 2px;
+        }
+        .holiday-label {
+            font-size: 9px;
+            color: #856404;
+            font-weight: bold;
+            margin-top: 2px;
+        }
+        .event {
+            background: #4CAF50;
+            color: white;
+            padding: 4px 6px;
+            margin: 3px 0;
+            border-radius: 4px;
+            font-size: 11px;
+            line-height: 1.3;
+            word-wrap: break-word;
+        }
+        .event.exam {
+            background: #f44336;
+        }
+        .event.assignment {
+            background: #2196F3;
+        }
+        .summary {
+            margin-top: 40px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+        .summary h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .summary-item {
+            padding: 10px;
+            margin: 5px 0;
+            background: white;
+            border-left: 4px solid #667eea;
+            border-radius: 4px;
+        }
+        .summary-date {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="calendar-container">
+    <h1>Course Calendar</h1>
+    <div class="semester-info">
+        Semester: September 02, 2025 to December 02, 2025
+    </div>
+<div class="month-header">September 2025</div><table class="calendar-table"><thead><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead><tbody><tr><td class="empty"></td><td><div class="day-number">1</div></td><td><div class="day-number">2</div><div class="event assignment">[sta302] Weekly Quiz Due (11:59 PM)</div><div class="event assignment">[sta302] Weekly Reflection Due (11:59 PM)</div><div class="event assignment">[sta302] MarkUs Worksheet Due (11:59 PM)</div></td><td><div class="day-number">3</div></td><td><div class="day-number">4</div></td><td><div class="day-number">5</div></td><td><div class="day-number">6</div></td></tr><tr><td><div class="day-number">7</div></td><td><div class="day-number">8</div></td><td><div class="day-number">9</div><div class="event assignment">[sta302] Weekly Quiz Due (11:59 PM)</div><div class="event assignment">[sta302] Weekly Reflection Due (11:59 PM)</div><div class="event assignment">[sta302] MarkUs Worksheet Due (11:59 PM)</div></td><td><div class="day-number">10</div></td><td><div class="day-number">11</div></td><td><div class="day-number">12</div></td><td><div class="day-number">13</div></td></tr><tr><td><div class="day-number">14</div></td><td><div class="day-number">15</div></td><td><div class="day-number">16</div><div class="event assignment">[sta302] Pre-requisite & Syllabus Quiz</div><div class="event assignment">[sta302] Weekly Quiz Due (11:59 PM)</div><div class="event assignment">[sta302] Weekly Reflection Due (11:59 PM)</div><div class="event assignment">[sta302] MarkUs Worksheet Due (11:59 PM)</div></td><td><div class="day-number">17</div></td><td><div class="day-number">18</div></td><td><div class="day-number">19</div></td><td><div class="day-number">20</div></td></tr><tr><td><div class="day-number">21</div></td><td><div class="day-number">22</div></td><td><div class="day-number">23</div><div class="event assignment">[sta302] Weekly Quiz Due (11:59 PM)</div><div class="event assignment">[sta302] Weekly Reflection Due (11:59 PM)</div><div class="event assignment">[sta302] MarkUs Worksheet Due (11:59 PM)</div></td><td><div class="day-number">24</div></td><td><div class="day-number">25</div></td><td><div class="day-number">26</div></td><td><div class="day-number">27</div></td></tr><tr><td><div class="day-number">28</div></td><td><div class="day-number">29</div></td><td><div class="day-number">30</div><div class="event assignment">[sta302] Weekly Quiz Due (11:59 PM)</div><div class="event assignment">[sta302] Weekly Reflection Due (11:59 PM)</div><div class="event assignment">[sta302] MarkUs Worksheet Due (11:59 PM)</div></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr></tbody></table><div class="month-header">October 2025</div><table class="calendar-table"><thead><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead><tbody><tr><td class="empty"></td><td class="empty"></td><td class="empty"></td><td><div class="day-number">1</div></td><td><div class="day-number">2</div></td><td><div class="day-number">3</div></td><td><div class="day-number">4</div></td></tr><tr><td><div class="day-number">5</div></td><td><div class="day-number">6</div></td><td><div class="day-number">7</div><div class="event assignment">[sta302] Weekly Quiz Due (11:59 PM)</div><div class="event assignment">[sta302] Weekly Reflection Due (11:59 PM)</div><div class="event assignment">[sta302] MarkUs Worksheet Due (11:59 PM)</div></td><td><div class="day-number">8</div></td><td><div class="day-number">9</div></td><td><div class="day-number">10</div></td><td><div class="day-number">11</div></td></tr><tr><td><div class="day-number">12</div></td><td><div class="day-number">13</div></td><td><div class="day-number">14</div><div class="event assignment">[sta302] Weekly Quiz Due (11:59 PM)</div><div class="event assignment">[sta302] Weekly Reflection Due (11:59 PM)</div><div class="event assignment">[sta302] MarkUs Worksheet Due (11:59 PM)</div></td><td><div class="day-number">15</div></td><td><div class="day-number">16</div><div class="event exam">[sta302] Term Test</div></td><td><div class="day-number">17</div></td><td><div class="day-number">18</div></td></tr><tr><td><div class="day-number">19</div></td><td><div class="day-number">20</div></td><td><div class="day-number">21</div><div class="event assignment">[sta302] Weekly Quiz Due (11:59 PM)</div><div class="event assignment">[sta302] Weekly Reflection Due (11:59 PM)</div><div class="event assignment">[sta302] MarkUs Worksheet Due (11:59 PM)</div></td><td><div class="day-number">22</div></td><td><div class="day-number">23</div><div class="event assignment">[sta302] Project Part 0: Team Agreement</div></td><td><div class="day-number">24</div></td><td><div class="day-number">25</div></td></tr><tr><td><div class="day-number">26</div></td><td class="break"><div class="day-number">27</div><div class="break-label">Reading Week</div></td><td class="break"><div class="day-number">28</div><div class="break-label">Reading Week</div></td><td class="break"><div class="day-number">29</div><div class="break-label">Reading Week</div></td><td class="break"><div class="day-number">30</div><div class="break-label">Reading Week</div></td><td class="break"><div class="day-number">31</div><div class="break-label">Reading Week</div></td><td class="empty"></td></tr></tbody></table><div class="month-header">November 2025</div><table class="calendar-table"><thead><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead><tbody><tr><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td><div class="day-number">1</div></td></tr><tr><td><div class="day-number">2</div></td><td><div class="day-number">3</div></td><td><div class="day-number">4</div><div class="event assignment">[sta302] Weekly Quiz Due (11:59 PM)</div><div class="event assignment">[sta302] Weekly Reflection Due (11:59 PM)</div><div class="event assignment">[sta302] MarkUs Worksheet Due (11:59 PM)</div></td><td><div class="day-number">5</div></td><td><div class="day-number">6</div></td><td><div class="day-number">7</div></td><td><div class="day-number">8</div></td></tr><tr><td><div class="day-number">9</div></td><td><div class="day-number">10</div></td><td><div class="day-number">11</div><div class="event assignment">[sta302] Weekly Quiz Due (11:59 PM)</div><div class="event assignment">[sta302] Weekly Reflection Due (11:59 PM)</div><div class="event assignment">[sta302] MarkUs Worksheet Due (11:59 PM)</div></td><td><div class="day-number">12</div></td><td><div class="day-number">13</div></td><td><div class="day-number">14</div></td><td><div class="day-number">15</div></td></tr><tr><td><div class="day-number">16</div></td><td><div class="day-number">17</div></td><td><div class="day-number">18</div><div class="event assignment">[sta302] Weekly Quiz Due (11:59 PM)</div><div class="event assignment">[sta302] Weekly Reflection Due (11:59 PM)</div><div class="event assignment">[sta302] MarkUs Worksheet Due (11:59 PM)</div></td><td><div class="day-number">19</div></td><td><div class="day-number">20</div></td><td><div class="day-number">21</div></td><td><div class="day-number">22</div></td></tr><tr><td><div class="day-number">23</div></td><td><div class="day-number">24</div></td><td><div class="day-number">25</div><div class="event assignment">[sta302] Weekly Quiz Due (11:59 PM)</div><div class="event assignment">[sta302] Weekly Reflection Due (11:59 PM)</div><div class="event assignment">[sta302] MarkUs Worksheet Due (11:59 PM)</div></td><td><div class="day-number">26</div></td><td><div class="day-number">27</div></td><td><div class="day-number">28</div><div class="event assignment">[sta302] Project Part 2: Poster & Presentation</div></td><td><div class="day-number">29</div></td></tr><tr><td><div class="day-number">30</div></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr></tbody></table><div class="month-header">December 2025</div><table class="calendar-table"><thead><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead><tbody><tr><td class="empty"></td><td><div class="day-number">1</div></td><td><div class="day-number">2</div><div class="event assignment">[sta302] Weekly Quiz Due (11:59 PM)</div><div class="event assignment">[sta302] Weekly Reflection Due (11:59 PM)</div><div class="event assignment">[sta302] MarkUs Worksheet Due (11:59 PM)</div></td><td><div class="day-number">3</div></td><td><div class="day-number">4</div></td><td><div class="day-number">5</div></td><td><div class="day-number">6</div></td></tr><tr><td><div class="day-number">7</div></td><td><div class="day-number">8</div></td><td><div class="day-number">9</div></td><td><div class="day-number">10</div></td><td><div class="day-number">11</div></td><td><div class="day-number">12</div></td><td><div class="day-number">13</div></td></tr><tr><td><div class="day-number">14</div></td><td><div class="day-number">15</div></td><td><div class="day-number">16</div></td><td><div class="day-number">17</div></td><td><div class="day-number">18</div></td><td><div class="day-number">19</div></td><td><div class="day-number">20</div></td></tr><tr><td><div class="day-number">21</div></td><td><div class="day-number">22</div></td><td><div class="day-number">23</div></td><td><div class="day-number">24</div></td><td><div class="day-number">25</div></td><td><div class="day-number">26</div></td><td><div class="day-number">27</div></td></tr><tr><td><div class="day-number">28</div></td><td><div class="day-number">29</div></td><td><div class="day-number">30</div></td><td><div class="day-number">31</div></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr></tbody></table></div></body></html>

@@ -1,125 +1,132 @@
-# Syllabus Calendar Generator
+# 📅 Planora - Smart Syllabus Calendar
 
-A web application that automatically extracts dates and deadlines from college syllabus PDFs and generates a beautiful, combined calendar view.
+Plan smarter, achieve more with Planora - an intelligent syllabus calendar generator that transforms your course PDFs into a unified, interactive calendar.
 
 ## Features
 
-- **Multi-Syllabus Support**: Upload multiple course syllabi at once
-- **Smart Date Extraction**: Automatically detects exams, assignments, quizzes, and deadlines
-- **University Calendar Integration**: Scrape university websites to detect reading weeks, holidays, and breaks
-- **Color-Coded Events**: Different colors for each course (assignments) while keeping exams consistent
-- **Recurring Events**: Handles weekly assignments (e.g., "every Tuesday")
-- **Combined View**: Merge all courses into a single calendar
-- **Export**: Download as HTML file
+- 📄 **Multi-Course Support**: Upload multiple syllabus PDFs at once
+- 🔍 **Auto-Parse Course Codes**: Automatically extracts course codes from PDF filenames
+- 📅 **Interactive Calendar**: Month-by-month navigation with a clean, modern interface
+- 🔐 **Secure Authentication**: Email/password and Google OAuth sign-in via Supabase
+- 🎨 **Clean UI**: Modern, neutral design with intuitive controls
+- 📱 **Responsive**: Works on desktop and mobile devices
 
 ## Tech Stack
 
-- **Frontend**: Vanilla HTML/CSS/JavaScript
-- **Backend**: Flask (Python)
-- **Date Parsing**: Regex patterns + context analysis
-- **Document Processing**: PyPDF2
-- **Web Scraping**: BeautifulSoup, requests
+### Frontend
+- React 18
+- Supabase Auth
+- Modern CSS with neutral color palette
 
-## Quick Start
+### Backend
+- Python 3
+- Flask
+- PDF parsing and date extraction
+- Calendar generation
+
+## Setup
 
 ### Prerequisites
+- Node.js (v14+)
 - Python 3.8+
-- pip
+- Supabase account
 
-### Installation
+### Backend Setup
 
-1. Clone the repository:
+1. Navigate to the backend directory:
 ```bash
-git clone https://github.com/YOUR_USERNAME/syllabus-calendar-app.git
-cd syllabus-calendar-app
+cd backend
+```
+
+2. Install Python dependencies:
+```bash
+pip3 install flask flask-cors python-dateutil pypdf2 beautifulsoup4
+```
+
+3. Run the backend server:
+```bash
+python3 app.py
+```
+
+The backend will run on `http://localhost:5001`
+
+### Frontend Setup
+
+1. Navigate to the frontend directory:
+```bash
+cd frontend
 ```
 
 2. Install dependencies:
 ```bash
-pip3 install -r backend/requirements.txt
+npm install
 ```
 
-3. Run the backend:
+3. Create a `.env.local` file with your Supabase credentials:
+```env
+REACT_APP_SUPABASE_URL=your_supabase_url
+REACT_APP_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+4. Build and serve the production app:
 ```bash
-cd backend
-python3 app.py
+npm run build
+npx serve -s build -l 3000
 ```
 
-4. Open `calendar_app.html` in your browser
+The frontend will run on `http://localhost:3000`
+
+### Supabase Configuration
+
+1. Create a Supabase project at https://supabase.com
+2. Enable Email authentication
+3. (Optional) Enable Google OAuth:
+   - Set up OAuth consent screen in Google Cloud Console
+   - Create OAuth credentials
+   - Add Supabase callback URL as authorized redirect URI
+   - Add credentials to Supabase Auth settings
 
 ## Usage
 
-1. **Upload PDFs**: Click "Add Syllabus PDF" and select your course syllabi
-2. **Enter Course Codes**: Provide course codes (e.g., STA302, ECO314) for each syllabus
-3. **Set Dates**: Enter your semester start and end dates
-4. **University Calendar** (Optional): Paste your university's academic calendar URL to auto-detect breaks
-5. **Generate**: Click "Generate Combined Calendar"
-
-The app will create a unified calendar showing all your courses with:
-- Color-coded assignments by course
-- All exams in red
-- Reading weeks and holidays highlighted
-- Weekly recurring assignments
-
-## How It Works
-
-1. **PDF Text Extraction**: Uses PyPDF2 to extract text from syllabus PDFs
-2. **Pattern Matching**: Regex patterns detect various date formats:
-   - "Monday, October 6, 2025"
-   - "Oct 6"
-   - "October 6th"
-3. **Context Analysis**: Identifies event types based on surrounding keywords:
-   - Term test, midterm, exam → Red (exam)
-   - Assignment, quiz, reflection → Blue/Green/etc (course-specific)
-4. **Recurring Events**: Generates weekly assignments automatically
-5. **Break Detection**: Scrapes university calendar URL for reading weeks/holidays
-6. **Calendar Merging**: Combines multiple courses while preserving break info
+1. Sign up or log in with email/password or Google
+2. Enter your semester start and end dates
+3. (Optional) Add university calendar URL
+4. Upload syllabus PDFs - course codes will be auto-detected
+5. Click "Generate Calendar"
+6. Navigate through months using Previous/Next buttons
+7. View all your assignments, exams, and deadlines in one place
 
 ## Project Structure
 
 ```
-syllabus-calendar-app/
+planora/
 ├── backend/
-│   ├── app.py              # Flask backend API
-│   ├── requirements.txt    # Python dependencies
-│   ├── uploads/           # Temporary PDF storage
-│   └── output/            # Generated calendars
-├── improved_calendar.py    # Core calendar generation logic
-├── calendar_app.html       # Web interface
+│   ├── app.py                 # Flask API server
+│   ├── improved_calendar.py   # Calendar generation logic
+│   └── uploads/              # PDF upload directory
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Auth.js       # Authentication component
+│   │   │   ├── Auth.css
+│   │   │   ├── CalendarUpload.js  # Main calendar interface
+│   │   │   └── CalendarUpload.css
+│   │   ├── App.js
+│   │   ├── AuthContext.js    # Supabase auth context
+│   │   └── supabaseClient.js
+│   └── package.json
 └── README.md
 ```
 
-## Deployment
-
-The app can be deployed to various platforms. See platform-specific instructions:
-
-### Render (Recommended - Free Tier)
-1. Create account at render.com
-2. Connect your GitHub repo
-3. Create Web Service
-4. Build command: `pip install -r backend/requirements.txt`
-5. Start command: `cd backend && python app.py`
-6. Deploy frontend (calendar_app.html) to static site
-
-### Heroku
-1. Add `Procfile` in backend: `web: python app.py`
-2. Add `runtime.txt`: `python-3.11.0`
-3. Deploy using Heroku CLI or GitHub integration
-
-### Railway
-Similar to Render - connect repo and deploy
-
-## Technologies
-
-- **Backend**: Python, Flask, PyPDF2, BeautifulSoup
-- **Frontend**: Vanilla HTML/CSS/JavaScript
-- **Calendar**: Python `calendar` module
-- **Date Parsing**: Regex patterns + context analysis
-
 ## Contributing
 
-Pull requests are welcome! For major changes, please open an issue first.
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
-MIT
+MIT License - feel free to use this project for your own needs.
+
+## Author
+
+Built with Claude Code

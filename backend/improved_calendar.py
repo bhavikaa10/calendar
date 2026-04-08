@@ -428,12 +428,15 @@ def generate_html_calendar(events, breaks, semester_start, semester_end, output_
             margin-bottom: 30px;
             font-size: 14px;
         }}
+        .month-container {{
+            margin-bottom: 0;
+        }}
         .month-header {{
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #0f172a;
             color: white;
             padding: 15px;
-            margin: 30px 0 15px 0;
-            border-radius: 8px;
+            margin: 0 0 15px 0;
+            border-radius: 8px 8px 0 0;
             font-size: 20px;
             font-weight: bold;
             text-align: center;
@@ -537,6 +540,7 @@ def generate_html_calendar(events, breaks, semester_start, semester_end, output_
 
     while current_date <= end_month:
         month_name = current_date.strftime('%B %Y')
+        html += '<div class="month-container">'
         html += f'<div class="month-header">{month_name}</div>'
         html += '<table class="calendar-table"><thead><tr>'
         html += '<th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>'
@@ -583,6 +587,7 @@ def generate_html_calendar(events, breaks, semester_start, semester_end, output_
             html += '</tr>'
 
         html += '</tbody></table>'
+        html += '</div>'  # Close month-container
 
         # Move to next month
         if current_date.month == 12:

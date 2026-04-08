@@ -3,7 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
   padding: 20px;
 }
 
@@ -13,7 +13,8 @@
   padding: 48px;
   max-width: 440px;
   width: 100%;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
 }
 
 .auth-header {
@@ -24,10 +25,7 @@
 .auth-header h1 {
   font-size: 32px;
   font-weight: 700;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #0f172a;
   margin-bottom: 8px;
 }
 
@@ -85,8 +83,8 @@
 
 .form-group input:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .form-group input:disabled {
@@ -115,14 +113,15 @@
 }
 
 .auth-button.primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #0f172a;
   color: white;
-  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
 }
 
 .auth-button.primary:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+  background: #1e293b;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.3);
 }
 
 .auth-button.google {
@@ -172,7 +171,7 @@
 .toggle-link {
   background: none;
   border: none;
-  color: #667eea;
+  color: #3b82f6;
   font-weight: 600;
   cursor: pointer;
   padding: 0;
@@ -181,6 +180,7 @@
 
 .toggle-link:hover:not(:disabled) {
   text-decoration: underline;
+  color: #2563eb;
 }
 
 .toggle-link:disabled {
