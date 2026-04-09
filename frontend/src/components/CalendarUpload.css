@@ -217,6 +217,28 @@
   flex-wrap: wrap;
 }
 
+.export-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-export {
+  padding: 8px 16px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-export:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
 .month-navigation {
   display: flex;
   align-items: center;

@@ -264,6 +264,14 @@ const CalendarUpload = () => {
                   Next →
                 </button>
               </div>
+              <div className="export-buttons">
+                <button onClick={() => alert('Export to ICS coming soon!')} className="btn-export">
+                  📅 Export ICS
+                </button>
+                <button onClick={() => alert('Export to PDF coming soon!')} className="btn-export">
+                  📄 Export PDF
+                </button>
+              </div>
               <button
                 onClick={() => {
                   setCalendarHtml('');
