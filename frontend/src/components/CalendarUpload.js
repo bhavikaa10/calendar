@@ -1,18 +1,81 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useAuth } from '../AuthContext';
+import { supabase } from '../supabaseClient';
 import './CalendarUpload.css';
 
 const CalendarUpload = () => {
+  const { user } = useAuth();
   const [courses, setCourses] = useState([{ courseCode: '', file: null }]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [universityUrl, setUniversityUrl] = useState('');
+  const [semesterName, setSemesterName] = useState('');
   const [loading, setLoading] = useState(false);
   const [calendarHtml, setCalendarHtml] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [currentMonthIndex, setCurrentMonthIndex] = useState(0);
   const [totalMonths, setTotalMonths] = useState(0);
+  const [savedCalendarId, setSavedCalendarId] = useState(null);
   const calendarRef = useRef(null);
+
+  // Load saved calendar on mount
+  useEffect(() => {
+    const loadSavedCalendar = async () => {
+      if (!user) return;
+
+      try {
+        const { data, error } = await supabase
+          .from('calendars')
+          .select(`
+            id,
+            semester_name,
+            start_date,
+            end_date,
+            calendar_html,
+            courses (
+              course_code,
+              course_name,
+              pdf_filename
+            )
+          `)
+          .eq('user_id', user.id)
+          .order('updated_at', { ascending: false })
+          .limit(1)
+          .single();
+
+        if (error) {
+          if (error.code !== 'PGRST116') { // Not found error
+            console.error('Error loading calendar:', error);
+          }
+          return;
+        }
+
+        if (data) {
+          setSemesterName(data.semester_name);
+          setStartDate(data.start_date);
+          setEndDate(data.end_date);
+          setCalendarHtml(data.calendar_html);
+          setSavedCalendarId(data.id);
+
+          // Reconstruct courses array from saved data
+          if (data.courses && data.courses.length > 0) {
+            const loadedCourses = data.courses.map(course => ({
+              courseCode: course.course_code,
+              file: null, // Can't restore file objects
+            }));
+            setCourses(loadedCourses);
+          }
+
+          setSuccess('Loaded your saved calendar!');
+        }
+      } catch (err) {
+        console.error('Error loading saved calendar:', err);
+      }
+    };
+
+    loadSavedCalendar();
+  }, [user]);
 
   // Auto-extract course code from PDF filename
   const extractCourseCode = (filename) => {
@@ -109,10 +172,70 @@ const CalendarUpload = () => {
       setSuccess(`Calendar generated successfully! Found ${data.total_events} events across ${data.num_courses} courses.`);
       setCalendarHtml(data.calendar_html);
       setCurrentMonthIndex(0);
+
+      // Auto-save calendar to database
+      await saveCalendarToDatabase(data.calendar_html, validCourses);
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Save calendar to Supabase
+  const saveCalendarToDatabase = async (htmlContent, coursesList) => {
+    if (!user || !htmlContent) return;
+
+    try {
+      // Generate semester name if not provided
+      const semName = semesterName || `Semester ${new Date().toLocaleDateString()}`;
+
+      // Upsert calendar (insert or update)
+      const { data: calendarData, error: calendarError } = await supabase
+        .from('calendars')
+        .upsert({
+          id: savedCalendarId || undefined,
+          user_id: user.id,
+          semester_name: semName,
+          start_date: startDate,
+          end_date: endDate,
+          calendar_html: htmlContent,
+        }, {
+          onConflict: 'user_id,semester_name'
+        })
+        .select()
+        .single();
+
+      if (calendarError) throw calendarError;
+
+      setSavedCalendarId(calendarData.id);
+
+      // Delete existing courses for this calendar
+      await supabase
+        .from('courses')
+        .delete()
+        .eq('calendar_id', calendarData.id);
+
+      // Insert new courses
+      if (coursesList && coursesList.length > 0) {
+        const coursesToInsert = coursesList.map(course => ({
+          calendar_id: calendarData.id,
+          course_code: course.courseCode,
+          course_name: course.courseCode, // Can be enhanced later
+          pdf_filename: course.file?.name || null,
+        }));
+
+        const { error: coursesError } = await supabase
+          .from('courses')
+          .insert(coursesToInsert);
+
+        if (coursesError) throw coursesError;
+      }
+
+      setSuccess(`Calendar saved! Found ${coursesList.length} courses.`);
+    } catch (err) {
+      console.error('Error saving calendar:', err);
+      setError(`Generated calendar but failed to save: ${err.message}`);
     }
   };
 
@@ -151,7 +274,18 @@ const CalendarUpload = () => {
 
       <form onSubmit={handleSubmit} className="upload-form">
         <div className="section">
-          <h3>Semester Dates</h3>
+          <h3>Semester Information</h3>
+          <div className="form-group">
+            <label htmlFor="semesterName">Semester Name</label>
+            <input
+              id="semesterName"
+              type="text"
+              placeholder="Fall 2024"
+              value={semesterName}
+              onChange={(e) => setSemesterName(e.target.value)}
+              disabled={loading}
+            />
+          </div>
           <div className="form-row">
             <div className="form-group">
               <label htmlFor="startDate">Start Date</label>
